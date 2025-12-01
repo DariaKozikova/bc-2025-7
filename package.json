@@ -3,15 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js -h localhost -p 3000 -c ./cache"
+ "scripts": {
+    "start": "node main.js",
+    "dev": "nodemon main.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "commander": "^14.0.2",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "multer": "^2.0.2",
     "superagent": "^10.2.3",
