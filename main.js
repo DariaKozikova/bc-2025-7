@@ -1,19 +1,16 @@
+require('dotenv').config(); // Підключення змінних середовища
 const express = require('express');
 const fs = require('fs');
 const http = require('http');
-const { program } = require('commander');
 const multer = require('multer');
 const path = require('path');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
-program
-  .requiredOption('-h, --host <host>')
-  .requiredOption('-p, --port <port>')
-  .requiredOption('-c, --cache <path>');
-
-program.parse(process.argv);
-const { host, port, cache } = program.opts();
+// Отримуємо налаштування з .env або дефолтні значення
+const host = process.env.HOST || '0.0.0.0';
+const port = process.env.PORT || 3000;
+const cache = process.env.CACHE_PATH || 'public/uploads';
 
 if (!fs.existsSync(cache)) fs.mkdirSync(cache, { recursive: true });
 
@@ -53,6 +50,7 @@ const swaggerOptions = {
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
+// Тимчасове сховище в пам'яті (поки не підключимо реальний запис в MySQL)
 let devices = [];
 let Id = 1;
 
@@ -378,10 +376,5 @@ app.post('/search', (req, res) => {
     res.status(201).json(result);
 });
 
-
 const server = http.createServer(app);
 server.listen(port, host, () => { console.log(`Server is running at: http://${host}:${port}`);});
-
-//http://localhost:3000/SearchForm.html
-//http://localhost:3000/RegisterForm.html
-//localhost:3000/docs
